@@ -15,6 +15,7 @@ const defaultState = {
   moodHistory: [],
   journal: "",
   journalDate: "",
+  sleepHistory: [],
   dark: false
 };
 
@@ -28,6 +29,15 @@ function loadState() {
     return {
       ...structuredClone(defaultState),
       ...parsed,
+      sleepHistory: Array.isArray(parsed.sleepHistory)
+        ? parsed.sleepHistory.filter(entry =>
+            entry &&
+            typeof entry.date === "string" &&
+            Number.isFinite(entry.hours) &&
+            entry.hours >= 0 &&
+            entry.hours <= 24
+            )
+        : [],
       moodHistory: Array.isArray(parsed.moodHistory)
         ? parsed.moodHistory
         : [],
@@ -342,3 +352,215 @@ $("#resetTimer").addEventListener("click", () => {
 });
 
 updateTimerDisplay();
+
+
+const sleepDateInput = $("#sleepDate");
+const sleepHoursInput = $("#sleepHours");
+
+// Use today's date in local time
+function getLocalDateString(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+sleepDateInput.value = getLocalDateString();
+
+function renderSleepGraph() {
+  const graph = $("#sleepGraph");
+  if (!graph) return;
+
+  graph.replaceChildren();
+
+  const today = new Date();
+  const days = [];
+
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date(today);
+    date.setDate(today.getDate() - i);
+    const dateKey = getLocalDateString(date);
+
+    days.push({
+      date: dateKey,
+      label: date.toLocaleDateString("en-IN", { day: "numeric", month: "short" }),
+      entry: state.sleepHistory.find(item => item.date === dateKey)
+    });
+  }
+
+  const NS = "http://www.w3.org/2000/svg";
+  const makeSvg = (tag, attrs, content) => {
+    const element = document.createElementNS(NS, tag);
+    Object.entries(attrs).forEach(([key, value]) =>
+      element.setAttribute(key, value)
+    );
+    if (content !== undefined) element.textContent = content;
+    graph.append(element);
+    return element;
+  };
+
+  const left = 35;
+  const right = 340;
+  const top = 20;
+  const bottom = 165;
+  const maxHours = 12;
+
+  // Horizontal grid lines and hour labels
+  for (let hour = 0; hour <= maxHours; hour += 3) {
+    const y = bottom - (hour / maxHours) * (bottom - top);
+
+    makeSvg("line", {
+      x1: left, y1: y, x2: right, y2: y,
+      stroke: "currentColor", "stroke-opacity": "0.15"
+    });
+
+    makeSvg("text", {
+      x: 27, y: y + 4,
+      "text-anchor": "end",
+      fill: "currentColor",
+      "font-size": "10"
+    }, String(hour));
+  }
+
+  const points = days.map((day, index) => {
+    const x = left + index * ((right - left) / 6);
+    const hours = day.entry ? day.entry.hours : null;
+    const y = hours === null ? null :
+      bottom - (Math.min(hours, maxHours) / maxHours) * (bottom - top);
+
+    return { ...day, x, y, hours };
+  });
+
+  // Connect only consecutive recorded days
+  let segment = [];
+
+  function drawSegment() {
+    if (segment.length > 1) {
+      makeSvg("polyline", {
+        points: segment.map(p => `${p.x},${p.y}`).join(" "),
+        fill: "none",
+        stroke: "#78977b",
+        "stroke-width": "3",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round"
+      });
+    }
+    segment = [];
+  }
+
+  points.forEach(point => {
+    if (point.hours === null) {
+      drawSegment();
+      return;
+    }
+    segment.push(point);
+  });
+  drawSegment();
+
+  points.forEach(point => {
+    if (point.hours !== null) {
+      makeSvg("circle", {
+        cx: point.x, cy: point.y, r: 4,
+        fill: "#78977b",
+        stroke: "currentColor",
+        "stroke-width": "1"
+      });
+
+      makeSvg("text", {
+        x: point.x, y: point.y - 9,
+        "text-anchor": "middle",
+        fill: "currentColor",
+        "font-size": "10",
+        "font-weight": "600"
+      }, `${point.hours}h`);
+    }
+
+    makeSvg("text", {
+      x: point.x, y: 185,
+      "text-anchor": "middle",
+      fill: "currentColor",
+      "font-size": "9"
+    }, point.label);
+  });
+}
+
+function renderSleepHistory() {
+  const list = $("#sleepHistoryList");
+  if (!list) return;
+
+  list.replaceChildren();
+
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 29);
+  const cutoffKey = getLocalDateString(cutoff);
+  const todayKey = getLocalDateString();
+
+  const entries = state.sleepHistory
+    .filter(entry => entry.date >= cutoffKey && entry.date <= todayKey)
+    .sort((a, b) => b.date.localeCompare(a.date));
+
+  if (!entries.length) {
+    const item = document.createElement("li");
+    item.textContent = "No sleep records yet. Add your first entry above. 🌱";
+    list.append(item);
+    return;
+  }
+
+  entries.forEach(entry => {
+    const item = document.createElement("li");
+    const date = new Date(entry.date + "T00:00:00");
+
+    item.textContent =
+      `${date.toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+      })} — ${entry.hours} hours`;
+
+    list.append(item);
+  });
+}
+
+$("#sleepForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const date = sleepDateInput.value;
+  const hours = Number(sleepHoursInput.value);
+
+  if (!date || date > getLocalDateString() ||
+      !Number.isFinite(hours) || hours < 0 || hours > 24) {
+    $("#sleepMessage").textContent =
+      "Please choose a valid date and enter between 0 and 24 hours.";
+    return;
+  }
+
+  const existing = state.sleepHistory.find(entry => entry.date === date);
+
+  if (existing) {
+    existing.hours = hours;
+  } else {
+    state.sleepHistory.push({ date, hours });
+  }
+
+  // Keep only the most recent 30 days of records
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 29);
+  const cutoffKey = getLocalDateString(cutoff);
+  const todayKey = getLocalDateString();
+
+  state.sleepHistory = state.sleepHistory.filter(
+    entry => entry.date >= cutoffKey && entry.date <= todayKey
+  );
+
+  const saved = saveState();
+
+  $("#sleepMessage").textContent = saved
+    ? `Saved ${hours} hour${hours === 1 ? "" : "s"} of sleep. 🌙`
+    : "Could not save. Check your browser storage settings.";
+
+  renderSleepGraph();
+  renderSleepHistory();
+});
+
+renderSleepGraph();
+renderSleepHistory();
