@@ -12,6 +12,7 @@ const defaultState = {
   ],
   nextTaskId: 4,
   mood: "",
+  moodHistory: [],
   journal: "",
   journalDate: "",
   dark: false
@@ -27,6 +28,9 @@ function loadState() {
     return {
       ...structuredClone(defaultState),
       ...parsed,
+      moodHistory: Array.isArray(parsed.moodHistory)
+        ? parsed.moodHistory
+        : [],
       habits: Array.isArray(parsed.habits) && parsed.habits.length === 4
         ? parsed.habits.map(Boolean)
         : [...defaultState.habits],
@@ -178,14 +182,62 @@ function renderMood() {
   updateStats();
 }
 
+
+function renderMoodHistory() {
+  const list = $("#moodHistoryList");
+  if (!list) return;
+
+  list.replaceChildren();
+
+  if (!state.moodHistory.length) {
+    const item = document.createElement("li");
+    item.textContent = "Your mood history will appear here. 🌱";
+    list.append(item);
+    return;
+  }
+
+  state.moodHistory.forEach(entry => {
+    const item = document.createElement("li");
+    const date = new Date(entry.date + "T00:00:00");
+
+    item.textContent =
+      `${date.toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+      })} — ${entry.mood}`;
+
+    list.append(item);
+  });
+}
+
+
 document.querySelectorAll("[data-mood]").forEach(button => {
   button.addEventListener("click", () => {
     selectedMood = button.dataset.mood;
     state.mood = selectedMood;
+
+    const today = new Date().toISOString().slice(0, 10);
+
+    const existingEntry = state.moodHistory.find(
+      entry => entry.date === today
+    );
+
+    if (existingEntry) {
+      existingEntry.mood = selectedMood;
+    } else {
+      state.moodHistory.unshift({
+        date: today,
+        mood: selectedMood
+      });
+    }
+
     saveState();
     renderMood();
+    renderMoodHistory();
   });
 });
+
 
 $("#saveJournal").addEventListener("click", () => {
   state.journal = $("#journalEntry").value;
