@@ -79,14 +79,34 @@ git log --oneline
 
 ## 8. DevOps Tool Integration
 
-**Status:** To be completed.
+**Tool used:** GitHub Actions
 
-The DevOps tool used, its integration steps, and evidence of successful execution will be documented here after integration.
+GitHub Actions was integrated to automatically check the project whenever changes are pushed to the `main` branch.
+
+### Integration Steps
+
+1. Created the `.github/workflows` directory.
+2. Created the `ci.yml` workflow file.
+3. Configured the workflow to run on pushes and pull requests to the `main` branch.
+4. Added a step to check that `index.html`, `style.css`, `script.js`, and `README.md` exist.
+5. Added a JavaScript syntax check using Node.js.
+6. Committed and pushed the workflow to GitHub.
+7. Verified that the workflow completed successfully with a green check mark.
+
+### Workflow Result
+
+The workflow ran successfully and confirmed that the required website files exist and the JavaScript syntax check passed.
 
 ## 9. Screenshots and Evidence
 
-Screenshots of the website, Git commit history, GitHub repository, and DevOps integration results will be added here.
+The following screenshots document the project development and DevOps integration:
 
+1. **Website:** Screenshot of the Life Reset Dashboard interface.
+2. **Git Commit History:** Screenshot showing the project commits using `git log --oneline`.
+3. **GitHub Repository:** Screenshot showing the project files on GitHub.
+4. **GitHub Actions:** Screenshot showing the successful CI workflow run.
+
+Screenshots should be saved in a folder named `LifeResetDashboard_Screenshots` and included with the submission if required by the instructor.
 ## 10. GitHub Repository
 
 Repository link: https://github.com/ChaitraliPawar2115/LifeResetDashboard
