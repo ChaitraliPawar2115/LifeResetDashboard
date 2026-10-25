@@ -293,3 +293,52 @@ if (quoteHeading) {
   const randomIndex = Math.floor(Math.random() * dailyQuotes.length);
   quoteHeading.textContent = dailyQuotes[randomIndex];
 }
+
+
+let timerSeconds = 25 * 60;
+let timerInterval = null;
+
+function updateTimerDisplay() {
+  const minutes = Math.floor(timerSeconds / 60);
+  const seconds = timerSeconds % 60;
+
+  $("#timerDisplay").textContent =
+    `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
+
+$("#startTimer").addEventListener("click", () => {
+  if (timerInterval !== null) return;
+
+  $("#timerMessage").textContent = "Focus on one thing at a time. 🌱";
+
+  timerInterval = setInterval(() => {
+    if (timerSeconds > 0) {
+      timerSeconds--;
+      updateTimerDisplay();
+    }
+
+    if (timerSeconds === 0) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      $("#timerMessage").textContent = "Session complete! Take a little break. 🎉";
+    }
+  }, 1000);
+});
+
+$("#pauseTimer").addEventListener("click", () => {
+  if (timerInterval !== null) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    $("#timerMessage").textContent = "Timer paused. Take a breath. ♡";
+  }
+});
+
+$("#resetTimer").addEventListener("click", () => {
+  clearInterval(timerInterval);
+  timerInterval = null;
+  timerSeconds = 25 * 60;
+  updateTimerDisplay();
+  $("#timerMessage").textContent = "Ready when you are. 🌱";
+});
+
+updateTimerDisplay();

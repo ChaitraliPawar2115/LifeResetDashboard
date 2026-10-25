@@ -253,3 +253,43 @@ body.dark .progress-track { background: #424c40; }
   .quote-flower { font-size: 29px; }
   .panel { padding: 18px; }
 }
+
+
+/* Focus Timer Buttons */
+.timer-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.timer-controls button {
+  padding: 11px 22px;
+  border: none;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.timer-controls .primary-button {
+  background: #78977b;
+  color: white;
+}
+
+.timer-controls .secondary-button {
+  background: #e8eee7;
+  color: #536b56;
+  border: 1px solid #d4e0d3;
+}
+
+.timer-controls button:hover {
+  transform: translateY(-2px);
+  filter: brightness(0.97);
+}
+
+.timer-controls button:active {
+  transform: translateY(0);
+}
