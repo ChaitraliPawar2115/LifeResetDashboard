@@ -107,6 +107,18 @@ The following screenshots document the project development and DevOps integratio
 4. **GitHub Actions:** Screenshot showing the successful CI workflow run.
 
 Screenshots should be saved in a folder named `LifeResetDashboard_Screenshots` and included with the submission if required by the instructor.
+### 1. Website Screenshot
+![Life Reset Dashboard](SS/01-Website.png)
+
+### 2. Git Commit History
+![Git Commit History](SS/02-Git-Commits.png)
+
+### 3. GitHub Repository
+![GitHub Repository](SS/03-GitHub-Repository.png)
+
+### 4. GitHub Actions — Successful Workflow
+![GitHub Actions Success](SS/04-GitHub-Actions.png)
+
 ## 10. GitHub Repository
 
 Repository link: https://github.com/ChaitraliPawar2115/LifeResetDashboard
