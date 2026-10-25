@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Life Reset | Your Personal Space</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <a class="brand" href="#">✿ life reset</a>
+      <p class="side-label">YOUR SPACE</p>
+      <a class="nav-link active" href="#home">⌂ Overview</a>
+      <a class="nav-link" href="#habits">♡ Daily habits</a>
+      <a class="nav-link" href="#tasks">☷ My tasks</a>
+      <a class="nav-link" href="#journal">✎ Mood journal</a>
+      <div class="side-note">
+        <span>🌷</span>
+        <p>Small steps still move you forward.</p>
+      </div>
+      <p class="side-footer">A little better, every day.</p>
+    </aside>
+
+    <main id="home">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">YOUR PERSONAL RESET SPACE</p>
+          <h1>Hello, lovely human <span>✿</span></h1>
+          <p class="subheading">You don't have to do it all. Just start somewhere.</p>
+        </div>
+        <button id="themeToggle" class="theme-button" aria-label="Toggle dark mode">☾</button>
+      </header>
+
+      <section class="quote-banner">
+        <span class="quote-flower">✿</span>
+        <div>
+          <p class="eyebrow">A LITTLE REMINDER</p>
+          <h2>You are allowed to begin again.</h2>
+          <p>Today is another chance to take care of yourself.</p>
+        </div>
+      </section>
+
+      <section class="stats-grid" aria-label="Daily summary">
+        <article class="stat-card">
+          <span class="stat-icon">♡</span>
+          <p>Habits completed</p>
+          <h2 id="habitStat">0 / 4</h2>
+          <div class="progress-track"><div id="habitProgress" class="progress-fill"></div></div>
+        </article>
+        <article class="stat-card">
+          <span class="stat-icon">☷</span>
+          <p>Tasks left</p>
+          <h2 id="taskStat">3</h2>
+          <span class="stat-foot">One step at a time</span>
+        </article>
+        <article class="stat-card">
+          <span class="stat-icon">☀</span>
+          <p>Today's mood</p>
+          <h2 id="moodStat">Not set</h2>
+          <span class="stat-foot">Check in with yourself</span>
+        </article>
+      </section>
+
+      <div class="content-grid">
+        <section id="habits" class="panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">BUILD YOUR ROUTINE</p>
+              <h2>Daily little wins <span>♡</span></h2>
+            </div>
+            <span class="pill">MY HABITS</span>
+          </div>
+          <p class="muted">Every small promise you keep matters.</p>
+          <div id="habitList" class="habit-list">
+            <label class="habit-item"><input type="checkbox" data-habit="0"><span class="habit-emoji">💧</span><span class="habit-name">Drink enough water</span></label>
+            <label class="habit-item"><input type="checkbox" data-habit="1"><span class="habit-emoji">📚</span><span class="habit-name">Learn something new</span></label>
+            <label class="habit-item"><input type="checkbox" data-habit="2"><span class="habit-emoji">🌿</span><span class="habit-name">Take a little break</span></label>
+            <label class="habit-item"><input type="checkbox" data-habit="3"><span class="habit-emoji">✨</span><span class="habit-name">Tidy my space</span></label>
+          </div>
+        </section>
+
+        <section id="tasks" class="panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">ONE THING AT A TIME</p>
+              <h2>Today's tasks <span>✎</span></h2>
+            </div>
+          </div>
+          <form id="taskForm" class="task-form">
+            <input id="taskInput" type="text" placeholder="Add a little task..." maxlength="100" required>
+            <button type="submit" aria-label="Add task">+</button>
+          </form>
+          <ul id="taskList" class="task-list"></ul>
+          <p id="taskMessage" class="muted small">You can do this, one step at a time.</p>
+        </section>
+
+        <section id="journal" class="panel journal-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">PAUSE & REFLECT</p>
+              <h2>How are you feeling? <span>☁</span></h2>
+            </div>
+          </div>
+          <div class="mood-options" role="group" aria-label="Choose your mood">
+            <button type="button" class="mood-button" data-mood="Happy" aria-label="Happy">😊</button>
+            <button type="button" class="mood-button" data-mood="Okay" aria-label="Okay">🙂</button>
+            <button type="button" class="mood-button" data-mood="Tired" aria-label="Tired">😴</button>
+            <button type="button" class="mood-button" data-mood="Sad" aria-label="Sad">🌧️</button>
+            <button type="button" class="mood-button" data-mood="An
