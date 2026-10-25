@@ -1,0 +1,30 @@
+name: Life Reset Dashboard CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  check-website:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download repository code
+        uses: actions/checkout@v4
+
+      - name: Check required website files
+        run: |
+          test -f index.html
+          test -f style.css
+          test -f script.js
+          test -f README.md
+          echo "All required website files are present!"
+
+      - name: Check JavaScript syntax
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --check script.js
