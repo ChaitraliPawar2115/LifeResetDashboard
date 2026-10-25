@@ -76,8 +76,25 @@ function renderHabits() {
     input.checked = Boolean(state.habits[index]);
   });
 
+  
+  const message = $("#habitProgressMessage");
+  const completed = state.habits.filter(Boolean).length;
+
+  if (message) {
+    if (completed === 0) {
+      message.textContent = "Every little step counts. Start with one habit! 🌱";
+    } else if (completed < 2) {
+      message.textContent = "You're off to a start. Keep going! 🌿";
+    } else if (completed < 4) {
+      message.textContent = "You're making progress. Be proud of yourself! 🌷";
+    } else {
+      message.textContent = "Amazing! You completed all your habits today! ✨";
+    }
+  }
+
   updateStats();
 }
+
 
 function renderTasks() {
   const list = $("#taskList");

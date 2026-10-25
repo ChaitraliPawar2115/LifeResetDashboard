@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,6 +80,9 @@
             <label class="habit-item"><input type="checkbox" data-habit="2"><span class="habit-emoji">🌿</span><span class="habit-name">Take a little break</span></label>
             <label class="habit-item"><input type="checkbox" data-habit="3"><span class="habit-emoji">✨</span><span class="habit-name">Tidy my space</span></label>
           </div>
+          <p id="habitProgressMessage" class="muted">
+            Every little step counts. Start with one habit! 🌱
+          </p>
         </section>
 
         <section id="tasks" class="panel">
@@ -108,4 +112,26 @@
             <button type="button" class="mood-button" data-mood="Okay" aria-label="Okay">🙂</button>
             <button type="button" class="mood-button" data-mood="Tired" aria-label="Tired">😴</button>
             <button type="button" class="mood-button" data-mood="Sad" aria-label="Sad">🌧️</button>
-            <button type="button" class="mood-button" data-mood="An
+            <button type="button" class="mood-button" data-mood="Anxious" aria-label="Anxious">🫧</button>
+          </div>
+          <label class="journal-label" for="journalEntry">A few words about today</label>
+          <textarea id="journalEntry" rows="3" maxlength="1000" placeholder="Today, I am feeling..."></textarea>
+          <button id="saveJournal" class="primary-button" type="button">Save today's reflection</button>
+          <p id="journalMessage" class="muted small" aria-live="polite"></p>
+        </section>
+
+        <section class="panel reset-panel">
+          <span class="reset-icon">🌼</span>
+          <div>
+            <p class="eyebrow">A GENTLE REMINDER</p>
+            <h2>Progress, not perfection.</h2>
+            <p class="muted">Rest is productive, too. Give yourself the same kindness you give others.</p>
+          </div>
+        </section>
+      </div>
+
+      <footer>Made with ♡ for your next little beginning.</footer>
+    </main>
+  </div>
+</body>
+</html>
