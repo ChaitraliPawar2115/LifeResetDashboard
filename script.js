@@ -208,3 +208,19 @@ function initialize() {
 }
 
 initialize();
+
+const dailyQuotes = [
+  "Small steps every day lead to big changes.",
+  "You don't have to be perfect to make progress.",
+  "Take a breath. You are doing better than you think.",
+  "A fresh start can happen at any moment.",
+  "Be proud of how far you have come.",
+  "Your only competition is who you were yesterday."
+];
+
+const quoteHeading = document.querySelector(".quote-banner h2");
+
+if (quoteHeading) {
+  const randomIndex = Math.floor(Math.random() * dailyQuotes.length);
+  quoteHeading.textContent = dailyQuotes[randomIndex];
+}
